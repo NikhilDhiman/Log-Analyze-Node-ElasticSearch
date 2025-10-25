@@ -1,0 +1,32 @@
+{
+  "name": "elastic-log-analyzer",
+  "version": "1.0.0",
+  "description": "A Node.js + Elasticsearch API for log analysis, filtering, full-text search, analytics, and export.",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "npx nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "elasticsearch",
+    "log-analysis",
+    "api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@elastic/elasticsearch": "^8.19.1",
+    "dotenv": "^17.2.3",
+    "express": "^4.19.2",
+    "json2csv": "^5.0.7",
+    "multer": "^2.0.2",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

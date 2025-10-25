@@ -21,7 +21,6 @@ yarn-error.log*
 logs/
 *.log
 *.csv
-*.json
 status/
 uploads/
 tmp/
@@ -29,6 +28,8 @@ pid/
 *.pid
 *.seed
 *.pid.lock
+status/
+scripts/ingest-status-*.json
 
 # ========================================
 # Build & Output
