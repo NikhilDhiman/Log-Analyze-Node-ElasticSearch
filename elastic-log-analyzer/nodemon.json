@@ -1,0 +1,5 @@
+{
+  "watch": ["app.js", "api", "scripts"],
+  "ignore": ["uploads", "status"],
+  "ext": "js,json"
+}
