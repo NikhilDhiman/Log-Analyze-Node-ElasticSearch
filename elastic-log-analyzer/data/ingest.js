@@ -5,11 +5,21 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const client = new Client({
-  node: process.env.ELASTIC_URL,
+// const client = new Client({   //Usasge with docker
+//   node: process.env.ELASTIC_URL,
+//   auth: {
+//     username: process.env.ELASTIC_USER,
+//     password: process.env.ELASTIC_PASS,
+//   },
+// });
+
+const client = new Client({   //elastic cloud 
+  node: process.env.ELASTIC_URL, 
   auth: {
-    username: process.env.ELASTIC_USER,
-    password: process.env.ELASTIC_PASS,
+    apiKey: process.env.ELASTIC_API_KEY, 
+  },
+  tls: {
+    rejectUnauthorized: false, 
   },
 });
 

@@ -10,9 +10,16 @@ const filePath = process.argv[3];  // uploaded file path
 const STATUS_FILE = `status/ingest-status-${jobId}.json`;
 const INDEX_NAME = "web-logs";
 
+// const client = new Client({
+//   node: process.env.ELASTIC_URL,
+//   auth: { username: process.env.ELASTIC_USER, password: process.env.ELASTIC_PASS },
+// });
+
 const client = new Client({
-  node: process.env.ELASTIC_URL,
-  auth: { username: process.env.ELASTIC_USER, password: process.env.ELASTIC_PASS },
+  node: process.env.ELASTIC_URL, // your cluster endpoint
+  auth: {
+    apiKey: process.env.ELASTIC_API_KEY, // base64 encoded key
+  }
 });
 
 const logRegex =

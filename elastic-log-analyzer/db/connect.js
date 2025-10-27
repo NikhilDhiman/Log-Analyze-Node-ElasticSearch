@@ -3,15 +3,25 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+// const client = new Client({
+//   node: process.env.ELASTIC_URL,
+//   auth: {
+//     username: process.env.ELASTIC_USER,
+//     password: process.env.ELASTIC_PASS,
+//   },
+//   apiVersion: '8.15',   
+//   tls: {
+//     rejectUnauthorized: false, 
+//   },
+// });
+
 const client = new Client({
-  node: process.env.ELASTIC_URL,
+  node: process.env.ELASTIC_URL, // your cluster endpoint
   auth: {
-    username: process.env.ELASTIC_USER,
-    password: process.env.ELASTIC_PASS,
+    apiKey: process.env.ELASTIC_API_KEY, // base64 encoded key
   },
-  apiVersion: '8.15',   
   tls: {
-    rejectUnauthorized: false, 
+    rejectUnauthorized: false, // optional for local/self-signed
   },
 });
 

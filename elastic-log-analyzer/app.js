@@ -7,6 +7,8 @@ import exportRoutes from "./api/routes/export.js";
 import filterRoutes from "./api/routes/filtering.js";
 import ingestRoutes from "./api/routes/ingest.js";
 
+import getLogs from "./api/routes/getLogs.js";
+
 
 
 dotenv.config();
@@ -21,6 +23,8 @@ app.use("/api/log", analyticsRoutes);
 app.use("/api/log", exportRoutes);
 app.use("/api/log", ingestRoutes);
 app.use("/api/logs", ingestRoutes);
+
+app.use("/api/log", getLogs);//display logs from Elasticsearch
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
