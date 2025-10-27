@@ -71,8 +71,6 @@ async function ingestLogs() {
   for await (const line of rl) {
     const match = line.match(logRegex);
     if (match) {
-      ///^(\S+) - - \[(.*?)\]                         "(\S+) (\S+) (\S+)"                (\d{3}) (\d+) "(.*?)" "(.*?)"/;
-      //54.36.149.41 - - [22/Jan/2019:03:56:14 +0330] "GET /filter/27|13%20,p53 HTTP/1.1" 200 30577 "-" "Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)" "-"
       const [_, ip, timestamp, method, url, protocol, status, bytes, referrer, agent] = match;
       const logEntry = {
         ip,
