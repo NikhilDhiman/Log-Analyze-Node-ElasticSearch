@@ -3,27 +3,27 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// const client = new Client({
-//   node: process.env.ELASTIC_URL,
-//   auth: {
-//     username: process.env.ELASTIC_USER,
-//     password: process.env.ELASTIC_PASS,
-//   },
-//   apiVersion: '8.15',   
-//   tls: {
-//     rejectUnauthorized: false, 
-//   },
-// });
-
 const client = new Client({
-  node: process.env.ELASTIC_URL, // your cluster endpoint
+  node: process.env.ELASTIC_URL,
   auth: {
-    apiKey: process.env.ELASTIC_API_KEY, // base64 encoded key
+    username: process.env.ELASTIC_USER,
+    password: process.env.ELASTIC_PASS,
   },
+  apiVersion: '8.15',   
   tls: {
-    rejectUnauthorized: false, // optional for local/self-signed
+    rejectUnauthorized: false, 
   },
 });
+
+// const client = new Client({
+//   node: process.env.ELASTIC_URL, // your cluster endpoint
+//   auth: {
+//     apiKey: process.env.ELASTIC_API_KEY, // base64 encoded key
+//   },
+//   tls: {
+//     rejectUnauthorized: false, // optional for local/self-signed
+//   },
+// });
 
 async function checkConnection() {
   try {

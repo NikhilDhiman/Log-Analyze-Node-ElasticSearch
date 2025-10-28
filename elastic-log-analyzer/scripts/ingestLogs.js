@@ -6,20 +6,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const jobId = process.argv[2];
-const filePath = process.argv[3];  // uploaded file path
+const filePath = process.argv[3];
 const STATUS_FILE = `status/ingest-status-${jobId}.json`;
 const INDEX_NAME = "web-logs";
 
-// const client = new Client({
-//   node: process.env.ELASTIC_URL,
-//   auth: { username: process.env.ELASTIC_USER, password: process.env.ELASTIC_PASS },
-// });
-
 const client = new Client({
-  node: process.env.ELASTIC_URL, // your cluster endpoint
-  auth: {
-    apiKey: process.env.ELASTIC_API_KEY, // base64 encoded key
-  }
+  node: process.env.ELASTIC_URL,
+  auth: { username: process.env.ELASTIC_USER, password: process.env.ELASTIC_PASS },
 });
 
 const logRegex =
@@ -29,7 +22,38 @@ function updateStatus(status) {
   fs.writeFileSync(STATUS_FILE, JSON.stringify(status, null, 2));
 }
 
+// ✅ Ensure index exists with correct mapping
+async function ensureIndex() {
+  const exists = await client.indices.exists({ index: INDEX_NAME });
+  if (!exists) {
+    console.log("Creating index with proper mapping...");
+    await client.indices.create({
+      index: INDEX_NAME,
+      body: {
+        mappings: {
+          properties: {
+            ip: { type: "keyword" },
+            timestamp: { type: "date", format: "dd/MMM/yyyy:HH:mm:ss Z" },
+            method: { type: "keyword" },
+            url: { type: "text" },
+            protocol: { type: "keyword" },
+            status: { type: "integer" },
+            bytes: { type: "integer" },
+            referrer: { type: "text" },
+            agent: { type: "text" },
+          },
+        },
+      },
+    });
+    console.log("✅ Index created successfully!");
+  } else {
+    console.log("ℹ️ Index already exists, continuing ingestion...");
+  }
+}
+
 async function ingestLogs() {
+  await ensureIndex(); // ✅ add this line
+
   updateStatus({ status: "running", indexed: 0, file: filePath });
 
   const fileStream = fs.createReadStream(filePath);
@@ -57,7 +81,12 @@ async function ingestLogs() {
 
   if (bulkBody.length) await client.bulk({ refresh: true, body: bulkBody });
 
-  updateStatus({ status: "completed", indexed: counter, file: filePath, finishedAt: new Date().toISOString() });
+  updateStatus({
+    status: "completed",
+    indexed: counter,
+    file: filePath,
+    finishedAt: new Date().toISOString(),
+  });
   console.log(`[${jobId}] ✅ Finished indexing ${counter} logs`);
 }
 
